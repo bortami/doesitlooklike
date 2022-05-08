@@ -12,9 +12,9 @@ const dbo = require("../db/conn");
 const ObjectId = require("mongodb").ObjectId;
 
 
-// This section will help you get a list of all the records.
+//get a list of all the records.
 recordRoutes.route("/record").get(function (req, res) {
-  let db_connect = dbo.getDb("employees");
+  let db_connect = dbo.getDb("observations");
   db_connect
     .collection("records")
     .find({})
@@ -24,7 +24,7 @@ recordRoutes.route("/record").get(function (req, res) {
     });
 });
 
-// This section will help you get a single record by id
+//you get a single record by id
 recordRoutes.route("/record/:id").get(function (req, res) {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
@@ -36,13 +36,18 @@ recordRoutes.route("/record/:id").get(function (req, res) {
       });
 });
 
-// This section will help you create a new record.
+//create a new record.
 recordRoutes.route("/record/add").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myobj = {
-    name: req.body.name,
-    position: req.body.position,
-    level: req.body.level,
+    obj1: req.body.obj1,
+    obj2: req.body.obj2,
+    opt1: req.body.opt1,
+    opt2: req.body.opt2,
+    opt3: req.body.opt3,
+    image: req.body.image,
+    yesCounts: req.body.yesCounts,
+    noCounts: req.body.noCounts,
   };
   db_connect.collection("records").insertOne(myobj, function (err, res) {
     if (err) throw err;
@@ -50,19 +55,25 @@ recordRoutes.route("/record/add").post(function (req, response) {
   });
 });
 
-// This section will help you update a record by id.
+//update a record by id.
 recordRoutes.route("/update/:id").post(function (req, response) {
   let db_connect = dbo.getDb();  
   let myquery = { _id: ObjectId( req.params.id )};  
   let newvalues = {    
     $set: {      
-      name: req.body.name,     
-      position: req.body.position,      
-      level: req.body.level,    
+        obj1: req.body.obj1,
+        obj2: req.body.obj2,
+        opt1: req.body.opt1,
+        opt2: req.body.opt2,
+        opt3: req.body.opt3,
+        image: req.body.image,
+        yesCounts: req.body.yesCounts,
+        noCounts: req.body.noCounts,  
   },  
 };
+});
 
-// This section will help you delete a record
+//delete a record
 recordRoutes.route("/:id").delete((req, response) => {
   let db_connect = dbo.getDb();
   let myquery = { _id: ObjectId( req.params.id )};
